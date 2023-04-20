@@ -1,5 +1,5 @@
 import { WsProvider, ApiPromise } from '@polkadot/api'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
 
 const NAME = 'MyDappName'
@@ -28,12 +28,8 @@ export default function Home() {
   },[])
 
   const handleConnection = async()=>{
-    const { web3Enable,web3Accounts, web3FromSource } = await import("@polkadot/extension-dapp");
-    const extensions = await web3Enable(NAME)
-
-    if(!extensions) {
-      throw Error("NO_EXTENSION_FOUND")
-    }
+    const { web3Enable,web3Accounts } = await import("@polkadot/extension-dapp");
+    await web3Enable(NAME)
 
     const allAccounts = await web3Accounts()
     setAccount(allAccounts)
@@ -43,6 +39,11 @@ export default function Home() {
     }
   }
 
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>)=>{
+    const selectedA = accounts.find(a => a.address === e.target.value)
+    setSelectedAccount(selectedA)
+  }
+  
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-5 p-24">
       <button
@@ -51,6 +52,14 @@ export default function Home() {
       className='py-0.5 px-2 rounded-md hover:bg-gray-800 transition duration-75 border-2' >
         Connect
       </button>
+      {accounts.length > 0 && 
+        <select onChange={handleSelect} >
+          {accounts.map((ac)=>(
+            <option key={ac.address} value={ac.address} >{ac.address}</option>
+          ))}
+        </select>
+      }
+      <span>Selected Account: {selectedAccount?.address}</span>
     </main>
   )
 }

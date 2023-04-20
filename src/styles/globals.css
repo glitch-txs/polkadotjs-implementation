@@ -6,3 +6,9 @@ body {
   color: #fff;
   background: #202020;
 }
+
+select{
+  background: #202020;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
