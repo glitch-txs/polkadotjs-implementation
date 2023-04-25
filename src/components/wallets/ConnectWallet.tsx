@@ -30,7 +30,7 @@ const ConnectWallet = (props: Props) => {
       <button
       disabled={accounts.length != 0}
       onClick={handleConnection}
-      className='py-0.5 px-2 rounded-md hover:bg-gray-800 transition duration-75 border-2' >
+      className='py-0.5 px-2 rounded-md hover:bg-gray-800 transition duration-75 border-2 flex flex-col' >
         Connect
       </button>
       {accounts?.length > 0 && 
