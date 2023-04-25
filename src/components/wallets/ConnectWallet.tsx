@@ -26,12 +26,12 @@ const ConnectWallet = (props: Props) => {
     }
     
   return (
-    <div>
+    <div className='flex flex-col gap-6'>
       <button
       disabled={accounts.length != 0}
       onClick={handleConnection}
-      className='py-0.5 px-2 rounded-md hover:bg-gray-800 transition duration-75 border-2 flex flex-col' >
-        Connect
+      className='py-0.5 px-2 rounded-md hover:bg-gray-800 transition duration-75 border-2' >
+        {accounts.length != 0 ? 'Connected' : 'Connect'}
       </button>
       {accounts?.length > 0 && 
         <select onChange={handleSelect} >
