@@ -12,6 +12,7 @@ const AMOUNT = new BN(10).mul(new BN(10).pow(new BN(12)))
 const Interaction = ({selectedAccount}: Props) => {
   const [api, setApi] = useState<ApiPromise>()
   const [period, setPeriod] = useState<string>('')
+  const [balance, setBalance] = useState<typeof BN>()
 
   const setup = async()=>{
     const provider = new WsProvider("wss://ws.gm.bldnodes.org/")
@@ -29,6 +30,13 @@ const Interaction = ({selectedAccount}: Props) => {
     })()
     
   },[api])
+
+  useEffect(()=>{
+    if(!api || !selectedAccount) return
+    api.query.system.account(selectedAccount.address, ({data: {free}}: {data: {free: typeof BN}})=>{
+      setBalance(free)
+    })
+  },[api, selectedAccount])
   
   const handleBurn = async()=>{
     if(!api || !selectedAccount) return
@@ -46,6 +54,7 @@ const Interaction = ({selectedAccount}: Props) => {
 
       {selectedAccount?.address && 
       <button className='py-0.5 px-2 rounded-md hover:bg-gray-800 transition duration-75 border-2' onClick={handleBurn}>Burn 10 Fren</button>}
+      Balance: {balance?.toString()}
     </>
   )
 }
